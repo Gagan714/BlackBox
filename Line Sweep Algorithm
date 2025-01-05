@@ -1,0 +1,41 @@
+// Just pass length of array and range updates (start,end,value)
+
+/**
+ * Applies a range update using the Line Sweep Algorithm.
+ *
+ * @param n       The size of the array to be updated.
+ * @param updates A 2D array where each update is defined as:
+ *                - updates[i][0] = start index of the range (inclusive)
+ *                - updates[i][1] = end index of the range (inclusive)
+ *                - updates[i][2] = value to be added to the range
+ * @return The final array after applying all updates.
+ */
+
+// Copy from here ......
+
+public static int[] applyLineSweep(int n, int[][] updates) {
+    // Step 1: Create a difference array of size n+1
+    int[] diff = new int[n + 1];
+
+    // Step 2: Process each update in the `updates` array
+    for (int[] update : updates) {
+        int start = update[0];
+        int end = update[1];
+        int value = update[2];
+
+        // Apply the range update in the difference array
+        diff[start] += value;
+        if (end + 1 < diff.length) {
+            diff[end + 1] -= value;
+        }
+    }
+
+    // Step 3: Compute the final array using a prefix sum of the difference array
+    int[] result = new int[n];
+    int currentSum = 0;
+    for (int i = 0; i < n; i++) {
+        currentSum += diff[i];
+        result[i] = currentSum;
+    }
+    return result;
+}
